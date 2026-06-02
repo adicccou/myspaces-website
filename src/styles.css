@@ -333,6 +333,14 @@ summary:focus-visible {
   min-width: 0;
 }
 
+.hero-copy > .eyebrow {
+  min-height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
 .hero-actions,
 .center-actions {
   display: flex;
@@ -1239,10 +1247,12 @@ details p {
 .footer-cta {
   display: grid;
   grid-template-columns: 1fr;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
   text-align: center;
   gap: 28px;
   align-items: center;
-  padding: 72px 0;
+  padding: 72px max(24px, calc((100vw - var(--container)) / 2));
   border-bottom: 1px solid var(--color-line);
 }
 
@@ -1330,9 +1340,10 @@ details p {
   transform: translateY(-1px);
 }
 
-.footer-social svg {
-  width: 18px;
-  height: 18px;
+.footer-social span {
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .footer-columns {

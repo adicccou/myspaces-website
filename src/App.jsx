@@ -8,10 +8,6 @@ import {
   Chrome,
   Folder2,
   Global,
-  Instagram,
-  MessageQuestion,
-  Messages1,
-  MessageText1,
   Minus,
   PlayCircle,
   ShieldTick,
@@ -97,15 +93,14 @@ function InstallAssurances({ compact = false }) {
 }
 
 function SocialIcon({ platform }) {
-  const iconMap = {
-    instagram: Instagram,
-    threads: Messages1,
-    twitter: MessageText1,
-    reddit: MessageQuestion,
+  const markMap = {
+    instagram: '◎',
+    threads: '@',
+    twitter: 'X',
+    reddit: 'r/',
   };
 
-  const Icon = iconMap[platform] ?? MessageQuestion;
-  return <Icon size={18} variant="Linear" aria-hidden="true" />;
+  return <span aria-hidden="true">{markMap[platform] ?? '•'}</span>;
 }
 
 function useDashboardArticles(limit) {
@@ -430,9 +425,21 @@ function SyncSection() {
 
 function PrivacyCta() {
   const privacyPromises = [
-    ['No data selling', 'Your browsing data is not packaged, sold, or used for ad targeting.'],
-    ['No ad profiles', 'MySpaces is designed for organization, not behavior profiling.'],
-    ['Built for focus', 'Sync and product data exist only to keep your spaces useful.'],
+    {
+      title: 'No data selling',
+      text: 'Your browsing data is not packaged, sold, or used for ad targeting.',
+      Icon: ShieldTick,
+    },
+    {
+      title: 'No ad profiles',
+      text: 'MySpaces is designed for organization, not behavior profiling.',
+      Icon: Global,
+    },
+    {
+      title: 'Built for focus',
+      text: 'Sync and product data exist only to keep your spaces useful.',
+      Icon: TickCircle,
+    },
   ];
 
   return (
@@ -442,10 +449,10 @@ function PrivacyCta() {
         <p>MySpaces is for organizing tabs, not monitoring behavior.</p>
       </div>
       <ul className="privacy-list" aria-label="MySpaces privacy promises">
-        {privacyPromises.map(([title, text]) => (
+        {privacyPromises.map(({ title, text, Icon }) => (
           <li key={title}>
             <span className="privacy-icon" aria-hidden="true">
-              <ShieldTick size={30} variant="Bulk" />
+              <Icon size={30} variant="Bulk" />
             </span>
             <span>
               <strong>{title}</strong>
