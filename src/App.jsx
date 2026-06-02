@@ -32,7 +32,7 @@ import {
   useCases,
 } from './content.js';
 import { fetchArticleBySlug, fetchArticles } from './articleApi.js';
-import { getSeo, normalizePath } from './seo.js';
+import { applySeoToDocument, articleSeo, getSeo, normalizePath } from './seo.js';
 
 const iconProps = { size: 24, variant: 'Bulk', 'aria-hidden': true };
 const useCaseIcons = [Folder2, BookSaved, Global, PlayCircle, AddCircle, ArchiveBook];
@@ -57,10 +57,7 @@ function useDocumentSeo(path) {
   const seo = useMemo(() => getSeo(path), [path]);
 
   useEffect(() => {
-    if (typeof document === 'undefined') return;
-    document.title = seo.title;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', seo.description);
+    applySeoToDocument(seo);
   }, [seo]);
 
   return seo;
@@ -759,22 +756,6 @@ function HomePage() {
   );
 }
 
-function FeaturesPage() {
-  return (
-    <>
-      <PageHero
-        eyebrow="Features"
-        title="A browser workspace manager for too many tabs."
-        text="MySpaces helps people who live in browser tabs separate active work, save reusable contexts, close clutter, and return to projects without rebuilding windows manually."
-      />
-      <FeatureGrid compact />
-      <UseCases />
-      <SyncSection />
-      <PrivacyCta />
-    </>
-  );
-}
-
 function PricingPage() {
   return (
     <>
@@ -807,11 +788,9 @@ function ArticlePage({ slug }) {
   const { status, article, error } = useDashboardArticle(slug);
 
   useEffect(() => {
-    if (!article || typeof document === 'undefined') return;
-    document.title = `${article.title} - MySpaces Articles`;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', article.metaDescription);
-  }, [article]);
+    if (!article) return;
+    applySeoToDocument(articleSeo(article, slug));
+  }, [article, slug]);
 
   if (status === 'loading') {
     return <div className="section article-status">Loading article from the dashboard...</div>;
@@ -991,121 +970,180 @@ function HelpPage() {
 
 function PrivacyPolicyPage() {
   return (
-    <LegalPage title="Privacy Policy" updated="May 31, 2026">
-      <h2>Overview</h2>
+    <LegalPage title="Privacy Policy" updated="June 3, 2026">
       <p>
-        MySpaces is a browser tab management product. This policy explains what information may be collected when you
-        use the website, browser extension, account features, sync features, checkout, and support channels.
+        Welcome to MySpaces, a browser extension designed to help you organize and manage your browser tabs efficiently.
+        This Privacy Policy explains how we handle your data. By using MySpaces, you agree to the practices described
+        below.
       </p>
-      <h2>Information we may collect</h2>
+      <h2>1. Data Collection</h2>
+      <p>
+        We do not collect or store personal browsing data. MySpaces is built with privacy in mind, and your tab data is
+        processed locally within your browser.
+      </p>
+      <p>
+        For the optional sync feature, we store only the minimum information required to connect your account and synced
+        spaces, such as your email address, website URLs, spaces, and tab structures. We do not store anything related to
+        those websites, such as cookies, cache, passwords, or other unrelated website data.
+      </p>
+      <h2>2. Account and Sync Features</h2>
+      <p>
+        MySpaces offers optional account-based features to sync your spaces and tabs across multiple browsers and
+        computers.
+      </p>
       <ul>
-        <li>Account information such as email address when you create an account or request support.</li>
-        <li>License and payment status from the checkout provider. Full card details are handled by the payment provider.</li>
-        <li>Product settings required to save spaces, support tab grouping, pinned tabs, and optional sync.</li>
-        <li>Support messages you send to MySpaces.</li>
-        <li>Basic website analytics such as page visits, referrers, browser type, and device information.</li>
+        <li>When you create an account, we store only the minimal data required to enable synchronization.</li>
+        <li>No browsing history, personal data, or unrelated information is collected or tracked.</li>
+        <li>Your synced data is transmitted and stored solely for the purpose of providing the sync feature.</li>
+        <li>You can delete your account and all associated data at any time by contacting us.</li>
       </ul>
-      <h2>How information is used</h2>
+      <h2>3. Data Tracking</h2>
       <p>
-        Information is used to operate the product, provide sync and licensing, respond to support, improve website
-        performance, prevent abuse, and comply with legal obligations.
+        We do not track your activity, monitor your browsing behavior, or share your data with third parties. All
+        non-synced functionality operates entirely offline and locally within your browser.
       </p>
-      <h2>Browsing activity</h2>
+      <h2>4. Authentication</h2>
       <p>
-        MySpaces is designed for organizing tabs. It does not sell browsing activity and does not need advertising
-        profiles to provide the product.
+        Using MySpaces locally does not require an account. The account system is optional and exists only for
+        synchronization purposes.
       </p>
-      <h2>Payments</h2>
+      <h2>5. Changes to This Privacy Policy</h2>
       <p>
-        Payments are processed by Lemon Squeezy or another checkout provider. MySpaces receives purchase confirmation,
-        license, and receipt information needed to activate and support the Lifetime plan.
+        We may update this Privacy Policy from time to time. Any updates will be posted on this page, and the Last
+        updated date will reflect the latest revision. We recommend checking this policy periodically to stay informed.
       </p>
-      <h2>Data sharing</h2>
-      <p>
-        MySpaces may use infrastructure, analytics, email, support, and payment providers to operate the website and
-        product. These providers only receive information needed for their role.
-      </p>
-      <h2>Your choices</h2>
-      <p>
-        You can uninstall the extension, stop using sync, request support, or ask for deletion of account-related data by
-        emailing {site.supportEmail}.
-      </p>
-      <h2>Contact</h2>
-      <p>Privacy questions can be sent to {site.supportEmail}.</p>
+      <h2>6. Contact Us</h2>
+      <p>If you have any questions or concerns about this Privacy Policy, please contact us at {site.supportEmail}.</p>
+      <p>Thank you for using MySpaces. Your privacy is our priority.</p>
     </LegalPage>
   );
 }
 
 function TermsPage() {
   return (
-    <LegalPage title="Terms of Use" updated="May 31, 2026">
-      <h2>Agreement</h2>
+    <LegalPage title="Terms of Use" updated="7 December 2025">
       <p>
-        By using MySpaces, you agree to these terms. If you do not agree, do not use the website, extension, checkout, or
-        related services.
+        Software: MySpaces, a Chrome Extension for Managing Tabs by Spaces.
       </p>
-      <h2>Product use</h2>
       <p>
-        MySpaces provides browser tab organization, spaces, tab group support, pinned tab support, and optional sync
-        features. You are responsible for how you use the product and for maintaining access to your browser, account,
-        and license.
+        These Terms of Use govern your access to and use of the MySpaces Chrome extension. By installing or using
+        MySpaces, you agree to be legally bound by these Terms. If you do not agree, do not use the Software.
       </p>
-      <h2>License</h2>
+      <h2>1. Acceptance of Terms</h2>
       <p>
-        The free plan may be used without payment. The Lifetime plan grants access to paid features for the purchasing
-        user according to the license and checkout terms provided at purchase.
+        By installing or using MySpaces, you confirm that you have read and understood these Terms, agree to comply with
+        them, and are legally capable of entering into binding agreements.
       </p>
-      <h2>Acceptable use</h2>
+      <p>
+        These Terms may be updated from time to time, and continued use of the Software constitutes acceptance of any
+        updated Terms.
+      </p>
+      <h2>2. License Grant</h2>
+      <p>
+        MySpaces grants you a limited, non-exclusive, non-transferable, revocable license to use the Software solely for
+        your personal or internal business purposes.
+      </p>
+      <p>
+        You do not acquire ownership of the Software. All rights, title, and interest remain the exclusive property of
+        the MySpaces Developers.
+      </p>
+      <h2>3. Prohibited Use</h2>
+      <p>You agree not to:</p>
       <ul>
-        <li>Do not attempt to reverse engineer, abuse, resell, or disrupt the product.</li>
-        <li>Do not use MySpaces in a way that violates law or third-party rights.</li>
-        <li>Do not attempt to bypass licensing, payment, sync, or security systems.</li>
+        <li>Copy, modify, reverse engineer, decompile, or disassemble the Software.</li>
+        <li>Sell, rent, sublicense, redistribute, or commercially exploit MySpaces.</li>
+        <li>Interfere with or disrupt the Software or its servers.</li>
+        <li>Attempt unauthorized access to any systems, user data, or accounts.</li>
+        <li>Use MySpaces for unlawful, harmful, or abusive purposes.</li>
       </ul>
-      <h2>Payments and refunds</h2>
       <p>
-        Paid purchases are processed by the checkout provider. Refund handling is described in the Refund Policy and may
-        depend on purchase status, duplicate charges, and support review.
+        Violation may result in immediate termination of your license without refund.
       </p>
-      <h2>Availability</h2>
+      <h2>4. Account and Sync Features</h2>
       <p>
-        MySpaces may change, improve, pause, or discontinue features. The product is provided as available, and no
-        guarantee is made that every browser or device configuration will always work.
+        Certain features of MySpaces, including cross-device syncing, require creation of an account.
       </p>
-      <h2>Limitation of liability</h2>
       <p>
-        To the maximum extent permitted by law, MySpaces is not liable for indirect damages, lost data, lost profits, or
-        browser and third-party service issues outside its control.
+        By creating an account using Google Sign-In, you acknowledge that authentication is handled solely through
+        Google. MySpaces does not store your password or authentication credentials, and you remain responsible for
+        managing access to your Google account.
       </p>
-      <h2>Contact</h2>
-      <p>Questions about these terms can be sent to {site.supportEmail}.</p>
-    </LegalPage>
-  );
-}
-
-function RefundPolicyPage() {
-  return (
-    <LegalPage title="Refund Policy" updated="May 31, 2026">
-      <h2>Overview</h2>
+      <p>We may suspend or terminate accounts that violate these Terms or pose security risks.</p>
+      <h2>5. Data Handling and Privacy</h2>
       <p>
-        MySpaces offers a free plan so users can try the product before buying a Lifetime license. Refund requests are
-        reviewed through support.
+        MySpaces does not collect personal browsing data or track your activities. Any data you choose to sync across
+        devices, such as tab names or workspace structures, is stored solely for the purpose of enabling the sync
+        feature.
       </p>
-      <h2>Eligible refund cases</h2>
+      <p>By using sync features, you consent to the storage and processing of such data.</p>
+      <p>
+        For full details, refer to the <a href="/privacy-policy/">Privacy Policy</a>.
+      </p>
+      <h2>6. Intellectual Property Rights</h2>
+      <p>
+        All intellectual property related to MySpaces, including code, design, branding, documentation, features, and
+        functionality, is owned exclusively by the MySpaces Developers.
+      </p>
+      <p>You may not:</p>
       <ul>
-        <li>Duplicate purchases made by mistake.</li>
-        <li>License activation issues that support cannot resolve.</li>
-        <li>Clear checkout errors reported soon after purchase.</li>
+        <li>Claim ownership.</li>
+        <li>Create derivative works.</li>
+        <li>Reproduce or distribute the Software or its branding.</li>
       </ul>
-      <h2>Non-refundable cases</h2>
+      <p>Any unauthorized use will be legally pursued to the maximum extent permitted by law.</p>
+      <h2>7. Disclaimer of Warranties</h2>
       <p>
-        Refunds may be declined where the product was used successfully, the request is abusive, or the request falls
-        outside the checkout provider rules.
+        MySpaces is provided as-is and as available without warranties of any kind, whether express or implied.
       </p>
-      <h2>How to request a refund</h2>
+      <p>We do not guarantee:</p>
+      <ul>
+        <li>Continuous or error-free operation.</li>
+        <li>Compatibility with all systems.</li>
+        <li>That synced data will be preserved without loss.</li>
+        <li>That bugs or issues will be resolved.</li>
+      </ul>
+      <p>Your use of MySpaces is entirely at your own risk.</p>
+      <h2>8. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by law, the MySpaces Developers shall not be liable for:</p>
+      <ul>
+        <li>Loss of data, tabs, projects, or productivity.</li>
+        <li>Damages caused by browser updates or third-party services.</li>
+        <li>Indirect, incidental, or consequential damages.</li>
+        <li>Any issues arising from misuse, installation errors, or configuration.</li>
+      </ul>
+      <p>Total liability, if any, shall not exceed the amount paid by you for the Software.</p>
+      <h2>9. Indemnification</h2>
       <p>
-        Email {site.supportEmail} with your purchase email, order reference, and a short explanation. Do not send card
-        details by email.
+        You agree to indemnify and hold harmless the MySpaces owners from any claims, losses, damages, liabilities, and
+        expenses arising from your misuse of the Software, violations of these Terms, or violation of any law or
+        third-party rights.
       </p>
+      <h2>10. Termination</h2>
+      <p>We reserve the right to suspend or terminate your access to MySpaces at any time, without refund, if:</p>
+      <ul>
+        <li>You violate these Terms.</li>
+        <li>Your account presents a security risk.</li>
+        <li>
+          The product is discontinued, though we will do our best to support and keep it up to date as long as possible.
+        </li>
+      </ul>
+      <p>Upon termination, your right to use the Software immediately ceases.</p>
+      <h2>11. No Guarantee of Availability</h2>
+      <p>We do not guarantee that:</p>
+      <ul>
+        <li>The service will remain available indefinitely.</li>
+        <li>Sync features will always function.</li>
+        <li>Future versions of Chrome or other browsers will support MySpaces.</li>
+      </ul>
+      <p>We reserve the right to modify, limit, or discontinue features at any time.</p>
+      <h2>12. Governing Law</h2>
+      <p>
+        These Terms shall be governed by and interpreted according to international business practices and general
+        contract principles unless a specific jurisdiction is designated in the future.
+      </p>
+      <h2>13. Contact Information</h2>
+      <p>If you have questions, contact us at {site.supportEmail}.</p>
+      <p>By installing or using MySpaces, you confirm that you accept and agree to be bound by these Terms of Use.</p>
     </LegalPage>
   );
 }
@@ -1115,8 +1153,8 @@ function WhatsNewPage() {
     <>
       <PageHero
         eyebrow="What's new"
-        title="Product and website updates."
-        text="Follow MySpaces release notes, product improvements, and website updates."
+        title="Product updates."
+        text="Follow MySpaces release notes, product improvements, bug fixes, and extension updates."
       />
       <section className="section timeline">
         {changeLog.map((entry) => (
@@ -1205,7 +1243,6 @@ function Footer() {
           <div className="footer-columns">
             <div>
               <strong>Product</strong>
-              <PageLink href="/features/">Features</PageLink>
               <PageLink href="/pricing/">Pricing</PageLink>
               <PageLink href="/whats-new/">What's New</PageLink>
             </div>
@@ -1219,7 +1256,6 @@ function Footer() {
               <strong>Legal</strong>
               <PageLink href="/privacy-policy/">Privacy Policy</PageLink>
               <PageLink href="/terms-of-use/">Terms of Use</PageLink>
-              <PageLink href="/refund-policy/">Refund Policy</PageLink>
             </div>
           </div>
         </div>
@@ -1234,7 +1270,6 @@ function Footer() {
 
 function renderRoute(path) {
   if (path === '/') return <HomePage />;
-  if (path === '/features/') return <FeaturesPage />;
   if (path === '/pricing/') return <PricingPage />;
   if (path === '/articles/') return <ArticlesPage />;
   if (path.startsWith('/articles/')) {
@@ -1246,7 +1281,6 @@ function renderRoute(path) {
   if (path === '/help-centre/') return <HelpPage />;
   if (path === '/privacy-policy/') return <PrivacyPolicyPage />;
   if (path === '/terms-of-use/') return <TermsPage />;
-  if (path === '/refund-policy/') return <RefundPolicyPage />;
   if (path === '/whats-new/') return <WhatsNewPage />;
   return <NotFoundPage />;
 }

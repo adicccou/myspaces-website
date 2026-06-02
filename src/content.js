@@ -3,6 +3,7 @@ export const site = {
   tagline: 'Browser workspace manager for people who keep too many tabs open.',
   origin: 'https://www.myspaces.app',
   supportEmail: 'dev.oilor@gmail.com',
+  updatedAt: '2026-06-03',
   installUrl:
     'https://chromewebstore.google.com/detail/tab-manager-myspaces/jgnmoggiaklbkpgcjfmjfalhannpifad',
   lifetimeUrl:
@@ -179,20 +180,14 @@ export const faqs = [
 
 export const changeLog = [
   {
-    version: 'Website refresh',
-    date: '2026-05-31',
-    items: ['React website structure', 'Articles section', 'SEO metadata', 'Legal and support pages'],
-  },
-  {
-    version: 'Product baseline',
-    date: '2025-11-01',
-    items: ['Spaces', 'Tab groups', 'Pinned tabs', 'Sync messaging', 'Lifetime license'],
+    version: 'Version 1.3.7',
+    date: '2026-06-03',
+    items: ['Added drag and move feature', 'Fixed various bugs', 'Fixed Google Auth bug'],
   },
 ];
 
 export const routes = [
   '/',
-  '/features/',
   '/pricing/',
   '/articles/',
   '/about-us/',
@@ -200,6 +195,5 @@ export const routes = [
   '/help-centre/',
   '/privacy-policy/',
   '/terms-of-use/',
-  '/refund-policy/',
   '/whats-new/',
 ];

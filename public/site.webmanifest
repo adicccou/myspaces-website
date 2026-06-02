@@ -1,17 +1,23 @@
 {
   "name": "MySpaces",
   "short_name": "MySpaces",
-  "description": "Browser tab manager for organizing tabs into reusable spaces.",
+  "description": "Browser workspace manager for saving reusable tab spaces, tab groups, pinned tabs, and cross-browser sync.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0b303b",
   "icons": [
     {
-      "src": "/assets/logo.svg",
-      "sizes": "402x80",
+      "src": "/assets/favicon.svg",
+      "sizes": "80x80",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "src": "/assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

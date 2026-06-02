@@ -15,7 +15,6 @@ The production build outputs to `dist/`.
 ## Pages
 
 - `/`
-- `/features/`
 - `/pricing/`
 - `/articles/`
 - `/articles/how-to-organize-browser-tabs-with-spaces/`
@@ -26,7 +25,6 @@ The production build outputs to `dist/`.
 - `/help-centre/`
 - `/privacy-policy/`
 - `/terms-of-use/`
-- `/refund-policy/`
 - `/whats-new/`
 
 ## SEO
