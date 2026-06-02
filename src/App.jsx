@@ -779,7 +779,6 @@ function PricingPage() {
   return (
     <>
       <PageHero
-        eyebrow="Pricing"
         title="Simple pricing for cleaner browser work."
         text="Start free with core tab organization. Upgrade once when unlimited spaces and sync become part of your daily workflow."
       />
@@ -852,36 +851,77 @@ function ArticlePage({ slug }) {
 }
 
 function AboutPage() {
+  const principles = [
+    [
+      Folder2,
+      'Reusable context',
+      'Workflows should reopen as a whole, not depend on memory, bookmarks, or a pile of half-open tabs.',
+    ],
+    [
+      ShieldTick,
+      'Privacy by default',
+      'The product is designed for organization, not behavior profiling, ad targeting, or selling browsing data.',
+    ],
+    [
+      TickCircle,
+      'Simple ownership',
+      'MySpaces keeps pricing direct: start free, then upgrade once if unlimited spaces and sync matter to your work.',
+    ],
+  ];
+  const audiences = ['Founders', 'Students', 'Operators', 'Marketers', 'Developers', 'Researchers'];
+
   return (
     <>
       <PageHero
-        eyebrow="About"
         title="MySpaces exists because browser work became project work."
         text="Most people do not use the browser for one task. They use it for clients, study, planning, media, admin, and research at the same time. MySpaces gives each workflow a proper home."
       />
-      <section className="section content-grid">
-        <article>
-          <h2>Product point of view</h2>
+      <section className="section about-overview">
+        <div className="about-story">
+          <p className="eyebrow">Product point of view</p>
+          <h2>The browser became the place where projects live.</h2>
           <p>
-            The browser is now the default workspace for many professionals. Bookmarks are too static, tab groups are
-            session-based, and dozens of open tabs are fragile. MySpaces sits between those behaviors: reusable,
-            practical, and fast enough for daily use.
+            Bookmarks are too static, tab groups are session-based, and dozens of open tabs are fragile. MySpaces sits
+            between those habits: reusable, practical, and fast enough for daily work.
           </p>
-        </article>
-        <article>
-          <h2>Who it is for</h2>
+          <div className="about-audience" aria-label="People MySpaces is built for">
+            {audiences.map((audience) => (
+              <span key={audience}>{audience}</span>
+            ))}
+          </div>
+        </div>
+        <div className="about-preview" aria-label="MySpaces product preview">
+          <img src="/assets/product-hero.png" alt="MySpaces browser workspace manager interface" loading="lazy" />
+        </div>
+      </section>
+
+      <section className="section about-principles" aria-labelledby="about-principles-title">
+        <div className="section-heading">
+          <h2 id="about-principles-title">Built around calmer browser work.</h2>
+          <p>The product promise is intentionally narrow: save the setup, reduce the clutter, and keep control simple.</p>
+        </div>
+        <div className="about-principle-grid">
+          {principles.map(([Icon, title, text], index) => (
+            <article key={title}>
+              <IconBadge icon={Icon} className={`tone-${index}`} />
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="about-band">
+        <div>
+          <h2>One product, one job.</h2>
           <p>
-            MySpaces is for founders, students, operators, marketers, developers, researchers, and anyone who frequently
-            switches between different browser-heavy workflows.
+            MySpaces is not trying to replace your browser. It gives each recurring workflow a stable home so you can
+            close tabs without losing your place.
           </p>
-        </article>
-        <article>
-          <h2>Business promise</h2>
-          <p>
-            The product stays focused on organization, privacy, and a simple one-time purchase path instead of another
-            recurring subscription.
-          </p>
-        </article>
+        </div>
+        <a className="button button-secondary" href="/">
+          Back Home
+        </a>
       </section>
     </>
   );
@@ -891,7 +931,6 @@ function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Contact"
         title="Get help with MySpaces."
         text="Use this page for support, billing, license, privacy, partnership, or product feedback requests."
       />
@@ -903,18 +942,20 @@ function ContactPage() {
             {site.supportEmail}
           </a>
         </article>
-        <div className="contact-list">
-          {[
-            ['Product help', 'Installation, spaces, tab groups, pinned tabs, and browser compatibility.'],
-            ['Billing and license', 'Lifetime purchase questions, license access, duplicate purchase checks, and receipts.'],
-            ['Privacy requests', 'Account data, deletion requests, sync questions, and product data concerns.'],
-            ['Partnerships', 'Distribution, product collaborations, and browser productivity partnerships.'],
-          ].map(([title, text]) => (
-            <article key={title}>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </article>
-          ))}
+        <div className="contact-social-card">
+          <h2>Reach out on social media</h2>
+          <p>
+            You can also message MySpaces through social channels for product feedback, quick questions, and community
+            updates.
+          </p>
+          <div className="contact-social-links" aria-label="MySpaces social links">
+            {socialLinks.map((social) => (
+              <a key={social.platform} href={social.href} target="_blank" rel="noreferrer">
+                <SocialIcon platform={social.platform} />
+                <span>{social.label}</span>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
     </>
@@ -925,7 +966,6 @@ function HelpPage() {
   return (
     <>
       <PageHero
-        eyebrow="Help centre"
         title="Setup, plans, sync, and troubleshooting."
         text="Core support information is filled in now so the website has a complete customer-facing help surface."
       />
@@ -1108,7 +1148,6 @@ function PageHero({ eyebrow, title, text }) {
 function LegalPage({ title, updated, children }) {
   return (
     <article className="section legal-page">
-      <p className="eyebrow">Legal</p>
       <h1>{title}</h1>
       <p className="updated">Last updated: {updated}</p>
       <div className="legal-body">{children}</div>

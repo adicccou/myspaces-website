@@ -930,6 +930,14 @@ details,
   box-shadow: var(--shadow-soft);
 }
 
+.price-card.highlighted .button {
+  box-shadow: none;
+}
+
+.price-card.highlighted .button:hover {
+  box-shadow: 0 18px 36px rgba(99, 55, 220, 0.24);
+}
+
 .price {
   background: linear-gradient(135deg, var(--color-brand), var(--color-pink));
   -webkit-background-clip: text;
@@ -1197,8 +1205,121 @@ details p {
 
 .content-grid article,
 .contact-card,
+.contact-social-card,
 .help-grid article {
   min-height: 190px;
+}
+
+.about-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 46px;
+  align-items: center;
+}
+
+.about-story {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+  padding: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.about-story h2 {
+  font-size: clamp(36px, 4vw, 52px);
+}
+
+.about-audience {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.about-audience span {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid rgba(134, 88, 245, 0.16);
+  border-radius: var(--radius-pill);
+  background: var(--color-lavender);
+  color: var(--color-ink);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.about-preview {
+  display: grid;
+  min-height: 0;
+  place-items: center;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.about-preview img {
+  width: min(100%, 620px);
+  filter: none;
+}
+
+.about-principles {
+  padding-top: 34px;
+}
+
+.about-principle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.about-principle-grid article {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-height: 250px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.about-principle-grid .icon-badge {
+  justify-self: start;
+}
+
+.about-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  width: min(var(--container), calc(100% - 48px));
+  gap: 24px;
+  align-items: center;
+  margin: 22px auto 72px;
+  padding: 34px;
+  border: 1px solid rgba(143, 118, 255, 0.18);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+}
+
+.about-band div {
+  display: grid;
+  gap: 10px;
+}
+
+.about-band h2 {
+  font-size: 36px;
+}
+
+.about-band p {
+  max-width: 680px;
 }
 
 .contact-list,
@@ -1207,6 +1328,62 @@ details p {
   gap: 16px;
 }
 
+.contact-social-card {
+  display: grid;
+  gap: 18px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.contact-social-card h2 {
+  font-size: 36px;
+}
+
+.contact-social-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.contact-social-links a {
+  display: flex;
+  min-height: 56px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--color-ink);
+  font-weight: 900;
+  transition:
+    border-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.contact-social-links a:hover {
+  border-color: rgba(134, 88, 245, 0.34);
+  color: var(--color-brand);
+  transform: translateY(-1px);
+}
+
+.contact-social-links a > span:first-child {
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-lavender);
+  color: var(--color-brand-strong);
+  font-size: 13px;
+  font-weight: 900;
+}
 .timeline {
   max-width: 900px;
 }
@@ -1417,6 +1594,8 @@ details p {
   .sync-section,
   .demo-section,
   .privacy-cta,
+  .about-overview,
+  .about-band,
   .content-grid,
   .contact-layout,
   .footer,
@@ -1452,8 +1631,17 @@ details p {
   .testimonial-grid,
   .article-grid,
   .help-grid,
-  .usecase-grid {
+  .usecase-grid,
+  .about-principle-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .about-preview {
+    min-height: 300px;
+  }
+
+  .about-band {
+    justify-items: start;
   }
 
   .feature-bento .feature-card:nth-child(1),
@@ -1542,12 +1730,88 @@ details p {
   .article-grid,
   .help-grid,
   .usecase-grid,
+  .about-principle-grid,
   .footer-columns {
     grid-template-columns: 1fr;
   }
 
+  .feature-section {
+    gap: 18px;
+  }
+
+  .feature-intro,
+  .section-heading {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .feature-card,
+  .testimonial-card,
+  .article-card,
+  .usecase-card,
+  .about-story,
+  .about-principle-grid article,
+  .contact-social-card,
+  .help-grid article,
+  .content-grid article,
+  .contact-card,
+  .contact-list article,
+  .timeline article,
+  .price-card,
+  .article-cta {
+    padding: 20px;
+  }
+
   .sync-visual {
     min-height: 0;
+  }
+
+  .sync-section,
+  .demo-section,
+  .about-overview,
+  .content-grid,
+  .contact-layout {
+    gap: 26px;
+  }
+
+  .contact-social-card h2 {
+    font-size: 28px;
+  }
+
+  .contact-social-links {
+    grid-template-columns: 1fr;
+  }
+
+  .about-preview {
+    min-height: 220px;
+    border-radius: var(--radius-lg);
+  }
+
+  .about-preview img {
+    width: 94%;
+  }
+
+  .about-principles {
+    padding-top: 20px;
+  }
+
+  .about-principle-grid article {
+    min-height: 0;
+  }
+
+  .about-band {
+    gap: 18px;
+    margin: 8px auto 42px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .about-band h2 {
+    font-size: 28px;
+  }
+
+  .about-band .button {
+    width: 100%;
   }
 
   .pain-list li,
