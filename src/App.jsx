@@ -212,7 +212,6 @@ function Hero() {
         <div className="hero-actions">
           <a className="button" href={site.installUrl}>
             Install MySpaces
-            <Chrome size={18} variant="Bulk" aria-hidden="true" />
           </a>
           <a className="button button-secondary" href="/pricing/">
             See Plans
