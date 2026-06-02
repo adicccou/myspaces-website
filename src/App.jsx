@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Add,
   AddCircle,
@@ -19,7 +19,6 @@ import {
   TickCircle,
 } from 'iconsax-react';
 import {
-  articles,
   browsers,
   changeLog,
   faqs,
@@ -33,6 +32,7 @@ import {
   testimonials,
   useCases,
 } from './content.js';
+import { fetchArticleBySlug, fetchArticles } from './articleApi.js';
 import { getSeo, normalizePath } from './seo.js';
 
 const iconProps = { size: 24, variant: 'Bulk', 'aria-hidden': true };
@@ -108,16 +108,62 @@ function SocialIcon({ platform }) {
   return <Icon size={18} variant="Linear" aria-hidden="true" />;
 }
 
+function useDashboardArticles(limit) {
+  const [state, setState] = useState({ status: 'loading', articles: [], error: '' });
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchArticles()
+      .then((items) => {
+        if (cancelled) return;
+        setState({ status: 'ready', articles: limit ? items.slice(0, limit) : items, error: '' });
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        setState({ status: 'error', articles: [], error: error.message || 'Failed to load articles' });
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [limit]);
+
+  return state;
+}
+
+function useDashboardArticle(slug) {
+  const [state, setState] = useState({ status: 'loading', article: null, error: '' });
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchArticleBySlug(slug)
+      .then((article) => {
+        if (cancelled) return;
+        setState({ status: 'ready', article, error: '' });
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        setState({ status: error.message === 'Article not found' ? 'not-found' : 'error', article: null, error: error.message });
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  return state;
+}
+
 function BrowserLogoStrip() {
   return (
     <div className="browser-logo-strip" aria-label="Supported browser logos">
       {browserLogoOrder.map((browserName) => (
-        <img
-          key={browserName}
-          src={browserLogoSources[browserName]}
-          alt={browserName}
-          referrerPolicy="no-referrer"
-        />
+        <span className="browser-logo-tile" key={browserName}>
+          <img src={browserLogoSources[browserName]} alt="" referrerPolicy="no-referrer" />
+          <span>{browserName}</span>
+        </span>
       ))}
     </div>
   );
@@ -189,12 +235,6 @@ function Hero() {
             className="hero-illustration-base"
             src="/assets/hero-illustration.svg?v=3"
             alt="MySpaces browser extension interface preview"
-          />
-          <img
-            className="hero-illustration-tabs"
-            src="/assets/hero-illustration.svg?v=3"
-            alt=""
-            aria-hidden="true"
           />
         </div>
       </div>
@@ -580,7 +620,20 @@ function ArticlesPreview() {
 }
 
 function ArticleGrid({ limit }) {
-  const list = limit ? articles.slice(0, limit) : articles;
+  const { status, articles: list, error } = useDashboardArticles(limit);
+
+  if (status === 'loading') {
+    return <div className="article-status">Loading articles from the dashboard...</div>;
+  }
+
+  if (status === 'error') {
+    return <div className="article-status">Articles could not be loaded from the dashboard. {error}</div>;
+  }
+
+  if (list.length === 0) {
+    return <div className="article-status">No MySpaces articles have been published from the dashboard yet.</div>;
+  }
+
   return (
     <div className="article-grid">
       {list.map((article) => (
@@ -597,6 +650,69 @@ function ArticleGrid({ limit }) {
             Read article
           </a>
         </article>
+      ))}
+    </div>
+  );
+}
+
+function articleContentBlocks(content = '') {
+  const lines = String(content).split(/\r?\n/);
+  const blocks = [];
+  let currentHeading = '';
+  let currentBody = [];
+
+  function flush() {
+    const body = currentBody.join('\n').trim();
+    if (currentHeading || body) {
+      blocks.push({ heading: currentHeading, body });
+    }
+    currentHeading = '';
+    currentBody = [];
+  }
+
+  lines.forEach((line) => {
+    const heading = line.match(/^#{2,3}\s+(.+)$/);
+    if (heading) {
+      flush();
+      currentHeading = heading[1].trim();
+      return;
+    }
+    currentBody.push(line);
+  });
+
+  flush();
+
+  if (blocks.length === 0 && content.trim()) {
+    return [{ heading: '', body: content.trim() }];
+  }
+
+  return blocks;
+}
+
+function articleParagraphText(paragraph) {
+  return paragraph
+    .replace(/^#+\s*/, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function ArticleBody({ content }) {
+  const blocks = articleContentBlocks(content);
+
+  return (
+    <div className="article-body">
+      {blocks.map((block, index) => (
+        <section key={`${block.heading}-${index}`}>
+          {block.heading ? <h2>{block.heading}</h2> : null}
+          {block.body
+            .split(/\n{2,}/)
+            .map(articleParagraphText)
+            .filter(Boolean)
+            .map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+        </section>
       ))}
     </div>
   );
@@ -654,7 +770,6 @@ function ArticlesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Articles"
         title="Practical guides for browser organization."
         text="Read practical browser productivity articles about tab management, spaces, Chrome tab groups, and reducing tab overload."
       />
@@ -665,8 +780,26 @@ function ArticlesPage() {
   );
 }
 
-function ArticlePage({ article }) {
-  if (!article) return <NotFoundPage />;
+function ArticlePage({ slug }) {
+  const { status, article, error } = useDashboardArticle(slug);
+
+  useEffect(() => {
+    if (!article || typeof document === 'undefined') return;
+    document.title = `${article.title} - MySpaces Articles`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', article.metaDescription);
+  }, [article]);
+
+  if (status === 'loading') {
+    return <div className="section article-status">Loading article from the dashboard...</div>;
+  }
+
+  if (status === 'not-found') return <NotFoundPage />;
+
+  if (status === 'error') {
+    return <div className="section article-status">Article could not be loaded from the dashboard. {error}</div>;
+  }
+
   return (
     <article className="section article-page">
       <div className="article-header">
@@ -681,14 +814,7 @@ function ArticlePage({ article }) {
         <h1>{article.title}</h1>
         <p>{article.excerpt}</p>
       </div>
-      <div className="article-body">
-        {article.sections.map(([heading, body]) => (
-          <section key={heading}>
-            <h2>{heading}</h2>
-            <p>{body}</p>
-          </section>
-        ))}
-      </div>
+      <ArticleBody content={article.content} />
       <div className="article-cta">
         <h2>Ready to organize your own tabs?</h2>
         <p>Install MySpaces and create separate spaces for the workflows you repeat most often.</p>
@@ -948,7 +1074,7 @@ function WhatsNewPage() {
 function PageHero({ eyebrow, title, text }) {
   return (
     <section className="page-hero">
-      <p className="eyebrow">{eyebrow}</p>
+      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
       <h1>{title}</h1>
       <p>{text}</p>
     </section>
@@ -1050,7 +1176,7 @@ function renderRoute(path) {
   if (path === '/articles/') return <ArticlesPage />;
   if (path.startsWith('/articles/')) {
     const slug = path.replace('/articles/', '').replace('/', '');
-    return <ArticlePage article={articles.find((article) => article.slug === slug)} />;
+    return <ArticlePage slug={slug} />;
   }
   if (path === '/about-us/') return <AboutPage />;
   if (path === '/contact-us/') return <ContactPage />;

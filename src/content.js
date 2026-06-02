@@ -177,84 +177,6 @@ export const faqs = [
   },
 ];
 
-export const articles = [
-  {
-    slug: 'how-to-organize-browser-tabs-with-spaces',
-    title: 'How to organize browser tabs with spaces',
-    excerpt:
-      'A practical system for separating work, study, research, media, and personal tabs without changing your whole browser setup.',
-    category: 'Tab Management',
-    readTime: '5 min read',
-    date: '2026-05-31',
-    metaDescription:
-      'Learn how to organize browser tabs with reusable spaces for work, study, personal projects, and research workflows.',
-    sections: [
-      [
-        'Start with outcomes, not random folders',
-        'Most tab systems fail because they copy bookmarks instead of workflows. Start by naming the outcomes you return to often: client work, research, finances, planning, study, or entertainment.',
-      ],
-      [
-        'Make one space per active context',
-        'A space should hold the tabs you need to resume a specific context. If a tab would confuse you when reopening that context tomorrow, it belongs somewhere else.',
-      ],
-      [
-        'Review spaces weekly',
-        'Close expired tabs, rename unclear spaces, and keep only the contexts you actually return to. A small weekly reset keeps the system useful.',
-      ],
-    ],
-  },
-  {
-    slug: 'browser-tab-overload-costs-focus',
-    title: 'Why browser tab overload costs focus',
-    excerpt:
-      'Too many open tabs create repeated decisions. Spaces reduce that cost by making each workflow easier to reopen and close.',
-    category: 'Productivity',
-    readTime: '4 min read',
-    date: '2026-05-31',
-    metaDescription:
-      'Understand why browser tab overload hurts focus and how tab spaces help reduce context switching.',
-    sections: [
-      [
-        'Tabs become unresolved decisions',
-        'Every open tab asks whether it still matters. Multiply that by dozens of tabs and the browser becomes a noisy task list.',
-      ],
-      [
-        'Context switching has a setup cost',
-        'When your research tabs, shopping tabs, personal tabs, and work tabs live together, switching tasks means mentally sorting the browser again.',
-      ],
-      [
-        'Spaces create clean exits',
-        'Saving a workflow into a space lets you close the current mess without losing the ability to return later.',
-      ],
-    ],
-  },
-  {
-    slug: 'chrome-tab-groups-vs-tab-spaces',
-    title: 'Chrome tab groups vs tab spaces',
-    excerpt:
-      'Tab groups are useful inside a session. Spaces are better when you need reusable, named workflows that survive context switches.',
-    category: 'Browser Workflow',
-    readTime: '6 min read',
-    date: '2026-05-31',
-    metaDescription:
-      'Compare Chrome tab groups and tab spaces to decide how to organize reusable browser workflows.',
-    sections: [
-      [
-        'Tab groups organize what is open now',
-        'Chrome tab groups are useful for visually grouping related open tabs in the current browser window.',
-      ],
-      [
-        'Spaces organize what you return to',
-        'Spaces work at the workflow level. They help you reopen the right tabs later, even after you have closed the browser context.',
-      ],
-      [
-        'Use both together',
-        'The strongest setup is simple: use spaces to save workflows and tab groups to keep active sessions readable.',
-      ],
-    ],
-  },
-];
-
 export const changeLog = [
   {
     version: 'Website refresh',
@@ -273,7 +195,6 @@ export const routes = [
   '/features/',
   '/pricing/',
   '/articles/',
-  ...articles.map((article) => `/articles/${article.slug}/`),
   '/about-us/',
   '/contact-us/',
   '/help-centre/',

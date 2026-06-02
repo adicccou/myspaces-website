@@ -1,6 +1,4 @@
-import { articles, faqs, routes, site } from './content.js';
-
-const articleByPath = new Map(articles.map((article) => [`/articles/${article.slug}/`, article]));
+import { faqs, routes, site } from './content.js';
 
 const baseMeta = {
   title: 'MySpaces - Browser Workspace Manager for Too Many Tabs',
@@ -16,15 +14,13 @@ export function normalizePath(pathname = '/') {
 
 export function getSeo(pathname = '/') {
   const path = normalizePath(pathname);
-  const article = articleByPath.get(path);
 
-  if (article) {
+  if (path.startsWith('/articles/') && path !== '/articles/') {
     return {
-      title: `${article.title} - MySpaces Articles`,
-      description: article.metaDescription,
+      title: 'MySpaces Article - Browser Tab Management Guide',
+      description: 'Read a MySpaces browser productivity article from the articles dashboard.',
       path,
       type: 'article',
-      jsonLd: articleJsonLd(article),
     };
   }
 
@@ -249,25 +245,5 @@ function collectionJsonLd() {
     '@type': 'CollectionPage',
     name: 'MySpaces Articles',
     url: `${site.origin}/articles/`,
-    hasPart: articles.map((article) => ({
-      '@type': 'Article',
-      headline: article.title,
-      url: `${site.origin}/articles/${article.slug}/`,
-      datePublished: article.date,
-    })),
-  };
-}
-
-function articleJsonLd(article) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: article.title,
-    description: article.metaDescription,
-    datePublished: article.date,
-    dateModified: article.date,
-    author: { '@type': 'Organization', name: site.name },
-    publisher: organizationJsonLd(),
-    mainEntityOfPage: `${site.origin}/articles/${article.slug}/`,
   };
 }
