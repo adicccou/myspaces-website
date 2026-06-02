@@ -1,0 +1,3 @@
+Site: MySpaces
+Purpose: Browser tab manager website
+Stack: React, Vite, static prerender
