@@ -10,6 +10,7 @@ import {
   Global,
   Minus,
   PlayCircle,
+  ProfileRemove,
   ShieldTick,
   Star1,
   TickCircle,
@@ -433,7 +434,7 @@ function PrivacyCta() {
     {
       title: 'No ad profiles',
       text: 'MySpaces is designed for organization, not behavior profiling.',
-      Icon: Global,
+      Icon: ProfileRemove,
     },
     {
       title: 'Built for focus',
