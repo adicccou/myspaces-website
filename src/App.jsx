@@ -11,6 +11,7 @@ import {
   Minus,
   PlayCircle,
   ProfileRemove,
+  Radar2,
   Shield,
   ShieldTick,
   Star1,
@@ -440,7 +441,7 @@ function PrivacyCta() {
     {
       title: 'Built for focus',
       text: 'Sync and product data exist only to keep your spaces useful.',
-      Icon: TickCircle,
+      Icon: Radar2,
     },
   ];
 
