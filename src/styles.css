@@ -927,7 +927,7 @@ details,
 
 .price-card.highlighted {
   background: var(--color-surface);
-  box-shadow: none;
+  box-shadow: var(--shadow-soft);
 }
 
 .price {
