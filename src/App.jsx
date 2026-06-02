@@ -11,6 +11,7 @@ import {
   Minus,
   PlayCircle,
   ProfileRemove,
+  Shield,
   ShieldTick,
   Star1,
   TickCircle,
@@ -429,7 +430,7 @@ function PrivacyCta() {
     {
       title: 'No data selling',
       text: 'Your browsing data is not packaged, sold, or used for ad targeting.',
-      Icon: ShieldTick,
+      Icon: Shield,
     },
     {
       title: 'No ad profiles',
