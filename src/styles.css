@@ -771,9 +771,10 @@ details,
   align-items: center;
   margin: 82px auto;
   padding: 32px;
-  border: 1px solid rgba(143, 118, 255, 0.18);
+  border: 0;
   border-radius: var(--radius-xl);
   background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
 }
 
 .privacy-copy {
