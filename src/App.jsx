@@ -182,7 +182,6 @@ function Header({ path }) {
       </nav>
       <a className="button button-small" href={site.installUrl}>
         Install Now
-        <Chrome size={16} variant="Bulk" aria-hidden="true" />
       </a>
     </header>
   );
