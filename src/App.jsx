@@ -530,7 +530,6 @@ function PricingBlocks({ showHeading = true }) {
             </ul>
             <a className={plan.badge ? 'button' : 'button button-secondary'} href={plan.href}>
               {plan.cta}
-              {plan.badge ? <ArrowRight2 size={18} variant="Bold" aria-hidden="true" /> : null}
             </a>
           </article>
         ))}
