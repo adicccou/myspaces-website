@@ -96,8 +96,25 @@ function InstallAssurances({ compact = false }) {
 }
 
 function SocialIcon({ platform }) {
+  if (platform === 'instagram') {
+    return (
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        <rect x="4" y="4" width="16" height="16" rx="5" />
+        <circle cx="12" cy="12" r="3.5" />
+        <circle cx="16.8" cy="7.2" r="1" />
+      </svg>
+    );
+  }
+
   const markMap = {
-    instagram: '◎',
     threads: '@',
     twitter: 'X',
     reddit: 'r/',
