@@ -659,14 +659,21 @@ function ArticleGrid({ limit }) {
     <div className="article-grid">
       {list.map((article) => (
         <article className="article-card" key={article.slug}>
+          {article.coverImage ? (
+            <a className="article-card-cover" href={`/articles/${article.slug}/`} aria-hidden="true" tabIndex={-1}>
+              <img src={article.coverImage} alt="" loading="lazy" />
+            </a>
+          ) : null}
           <div className="seo-only">
             <span>{article.category}</span>
             <span>{article.readTime}</span>
           </div>
-          <h3>
-            <a href={`/articles/${article.slug}/`}>{article.title}</a>
-          </h3>
-          <p>{article.excerpt}</p>
+          <div className="article-card-copy">
+            <h3>
+              <a href={`/articles/${article.slug}/`}>{article.title}</a>
+            </h3>
+            <p>{article.excerpt}</p>
+          </div>
           <a className="text-link" href={`/articles/${article.slug}/`}>
             Read article
           </a>
@@ -676,66 +683,18 @@ function ArticleGrid({ limit }) {
   );
 }
 
-function articleContentBlocks(content = '') {
-  const lines = String(content).split(/\r?\n/);
-  const blocks = [];
-  let currentHeading = '';
-  let currentBody = [];
-
-  function flush() {
-    const body = currentBody.join('\n').trim();
-    if (currentHeading || body) {
-      blocks.push({ heading: currentHeading, body });
-    }
-    currentHeading = '';
-    currentBody = [];
-  }
-
-  lines.forEach((line) => {
-    const heading = line.match(/^#{2,3}\s+(.+)$/);
-    if (heading) {
-      flush();
-      currentHeading = heading[1].trim();
-      return;
-    }
-    currentBody.push(line);
-  });
-
-  flush();
-
-  if (blocks.length === 0 && content.trim()) {
-    return [{ heading: '', body: content.trim() }];
-  }
-
-  return blocks;
-}
-
-function articleParagraphText(paragraph) {
-  return paragraph
-    .replace(/^#+\s*/, '')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
 function ArticleBody({ content }) {
-  const blocks = articleContentBlocks(content);
+  const html = String(content || '').trim();
+
+  if (!html) return null;
 
   return (
-    <div className="article-body">
-      {blocks.map((block, index) => (
-        <section key={`${block.heading}-${index}`}>
-          {block.heading ? <h2>{block.heading}</h2> : null}
-          {block.body
-            .split(/\n{2,}/)
-            .map(articleParagraphText)
-            .filter(Boolean)
-            .map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-        </section>
-      ))}
-    </div>
+    <div
+      className="article-body"
+      dangerouslySetInnerHTML={{
+        __html: html,
+      }}
+    />
   );
 }
 
@@ -804,14 +763,17 @@ function ArticlePage({ slug }) {
 
   return (
     <article className="section article-page">
+      {article.coverImage ? (
+        <div className="article-cover">
+          <img src={article.coverImage} alt={article.title} />
+        </div>
+      ) : null}
       <div className="article-header">
-        <a className="text-link" href="/articles/">
-          Articles
-        </a>
-        <div className="seo-only">
+        <div className="article-meta">
           <span>{article.category}</span>
           <span>{article.readTime}</span>
-          <span>{article.date}</span>
+          {article.publishedDateLabel ? <span>{article.publishedDateLabel}</span> : null}
+          {article.publishedTimeLabel ? <span>{article.publishedTimeLabel}</span> : null}
         </div>
         <h1>{article.title}</h1>
         <p>{article.excerpt}</p>

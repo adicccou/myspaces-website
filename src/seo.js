@@ -112,6 +112,7 @@ export function articleSeo(article, slug) {
   const path = `/articles/${slug || article?.slug || ''}/`;
   const title = article?.title ? `${article.title} - MySpaces Articles` : 'MySpaces Article - Browser Tab Management Guide';
   const description = article?.metaDescription || article?.excerpt || 'Read a MySpaces browser productivity article.';
+  const image = article?.ogImage || article?.coverImage || `${site.origin}${site.ogImage}`;
 
   return {
     title,
@@ -119,8 +120,10 @@ export function articleSeo(article, slug) {
     keywords: [article?.category, 'browser productivity', 'tab management', 'MySpaces'].filter(Boolean).join(', '),
     path,
     type: 'article',
-    publishedTime: article?.date,
-    modifiedTime: article?.date,
+    image,
+    imageAlt: article?.title || 'MySpaces article cover image',
+    publishedTime: article?.publishedAt || article?.date,
+    modifiedTime: article?.publishedAt || article?.date,
     jsonLd: [articleJsonLd(article, path), breadcrumbJsonLd(path, article?.title)].filter(Boolean),
   };
 }
@@ -141,8 +144,8 @@ export function escapeHtml(value = '') {
 
 export function renderSeoHead(seo) {
   const url = canonicalUrl(seo.path);
-  const image = `${site.origin}${site.ogImage}`;
-  const imageAlt = 'MySpaces browser workspace manager interface preview';
+  const image = seo.image || `${site.origin}${site.ogImage}`;
+  const imageAlt = seo.imageAlt || 'MySpaces browser workspace manager interface preview';
   const jsonLd = Array.isArray(seo.jsonLd) ? seo.jsonLd : seo.jsonLd ? [seo.jsonLd] : [];
 
   return [
@@ -182,8 +185,8 @@ export function applySeoToDocument(seo) {
   if (typeof document === 'undefined') return;
 
   const url = canonicalUrl(seo.path);
-  const image = `${site.origin}${site.ogImage}`;
-  const imageAlt = 'MySpaces browser workspace manager interface preview';
+  const image = seo.image || `${site.origin}${site.ogImage}`;
+  const imageAlt = seo.imageAlt || 'MySpaces browser workspace manager interface preview';
   const jsonLd = Array.isArray(seo.jsonLd) ? seo.jsonLd : seo.jsonLd ? [seo.jsonLd] : [];
 
   document.title = seo.title;
@@ -337,10 +340,10 @@ function articleJsonLd(article, path) {
     '@type': 'Article',
     headline: article.title,
     description: article.metaDescription || article.excerpt,
-    datePublished: article.date || site.updatedAt,
-    dateModified: article.date || site.updatedAt,
+    datePublished: article.publishedAt || article.date || site.updatedAt,
+    dateModified: article.publishedAt || article.date || site.updatedAt,
     mainEntityOfPage: canonicalUrl(path),
-    image: `${site.origin}${site.ogImage}`,
+    image: article.ogImage || article.coverImage || `${site.origin}${site.ogImage}`,
     author: { '@type': 'Organization', name: site.name },
     publisher: {
       '@type': 'Organization',

@@ -13,19 +13,51 @@ function estimateReadTime(content = '') {
   return `${Math.max(1, Math.ceil(words / 220))} min read`;
 }
 
+function formatPublishedDate(publishedAt) {
+  if (!publishedAt) return '';
+
+  const value = new Date(publishedAt);
+  if (Number.isNaN(value.getTime())) return '';
+
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(value);
+}
+
+function formatPublishedTime(publishedAt) {
+  if (!publishedAt) return '';
+
+  const value = new Date(publishedAt);
+  if (Number.isNaN(value.getTime())) return '';
+
+  return new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  }).format(value);
+}
+
 export function normalizeDashboardArticle(article) {
   const content = article.content || '';
   const publishedAt = article.published_at || article.updated_at || '';
+  const coverImage = article.cover_image || article.og_image || '';
 
   return {
     slug: article.slug,
     title: article.title,
     excerpt: article.excerpt || plainText(content).slice(0, 180),
     content,
+    coverImage,
     category: article.category || 'Guide',
     readTime: article.readTime || estimateReadTime(content),
     date: publishedAt ? publishedAt.slice(0, 10) : '',
+    publishedAt,
+    publishedDateLabel: formatPublishedDate(publishedAt),
+    publishedTimeLabel: formatPublishedTime(publishedAt),
     metaDescription: article.meta_description || article.excerpt || plainText(content).slice(0, 180),
+    ogImage: article.og_image || coverImage,
   };
 }
 
