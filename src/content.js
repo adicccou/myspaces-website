@@ -176,6 +176,106 @@ export const faqs = [
     answer:
       'Use the Buy Lifetime License button on the pricing page. After purchase, your license will be sent to your email, along with the instructions you need to activate it.',
   },
+  {
+    question: 'How do I install the MySpaces browser extension?',
+    answer:
+      'Open the MySpaces listing in the Chrome Web Store or Firefox Add-ons, choose the browser option, and follow the store installation prompt. Once installed, open the MySpaces extension from your browser toolbar or extensions menu. If you do not see it, check the browser extensions menu and pin MySpaces for quicker access.',
+  },
+  {
+    question: 'How do I create my first space?',
+    answer:
+      'Open MySpaces and create a space for one clear context, such as a client, course, or personal planning. Give it a recognizable name, add the tabs that belong to that activity, and save the setup. Keep unrelated work in separate spaces so it is easier to return to the right browser context later.',
+  },
+  {
+    question: 'What is a space in MySpaces?',
+    answer:
+      'A space is a named, reusable browser workspace made from a set of tabs for a particular task or context. Examples include a work project, a class, trip planning, research, or personal admin. MySpaces helps you save and reopen those tab setups instead of searching through one long mixed window.',
+  },
+  {
+    question: 'How do I reopen a saved space?',
+    answer:
+      'Open MySpaces from your browser toolbar and select the saved space you want to return to. MySpaces restores the tabs associated with that workspace. The exact window and tab behavior can depend on your browser and current session.',
+  },
+  {
+    question: 'Can I use MySpaces with browser tab groups?',
+    answer:
+      'Yes. MySpaces supports browser tab groups as part of an active browsing session. A space is the reusable workspace you save and return to; tab groups help visually organize related tabs within the browser.',
+  },
+  {
+    question: 'Can I keep important tabs pinned?',
+    answer:
+      'Yes. MySpaces supports pinned tabs. Pin recurring tools such as email or a calendar when you want them close at hand. Pinned-tab behavior is controlled by the browser and can vary between browser versions.',
+  },
+  {
+    question: 'How many spaces can I create?',
+    answer:
+      'The Free plan includes up to 3 spaces. The Lifetime plan includes unlimited spaces. See the MySpaces pricing page for the current plan details.',
+  },
+  {
+    question: 'Does MySpaces sync my spaces between devices?',
+    answer:
+      'MySpaces offers sync for saved spaces. The Free plan includes sync for up to 3 spaces; Lifetime includes sync between supported browsers and computers. Sync requires the relevant account or sync setup in MySpaces. It does not sync browser cookies, passwords, or website sessions.',
+  },
+  {
+    question: 'Why are my spaces not appearing on another computer?',
+    answer:
+      'Check that you have signed in or completed the sync setup on both devices, that both are online, and that you are using the same MySpaces account. Confirm that sync is available for your plan and allow a short time for changes to appear. If the issue continues, contact support with your browser name and version and a description of what you expected to sync.',
+  },
+  {
+    question: 'Does MySpaces sync passwords, cookies, or logged-in sessions?',
+    answer:
+      'No. MySpaces sync is for workspace information such as saved spaces, website URLs, and tab structure. Browser cookies, passwords, cache, and logged-in website sessions remain managed by your browser and are not part of MySpaces space sync.',
+  },
+  {
+    question: 'Is MySpaces available for Firefox?',
+    answer:
+      'Yes. MySpaces is available through Firefox Add-ons. Install the Firefox version from its official add-ons listing. Some browser capabilities can differ between Firefox and Chromium-based browsers.',
+  },
+  {
+    question: 'Which browsers can I use with MySpaces?',
+    answer:
+      'MySpaces is available for Chrome and Firefox, and supports compatible Chromium-based browsers including Edge, Brave, and Opera. Availability and some browser-specific behavior depend on each browser and its extension store.',
+  },
+  {
+    question: 'I cannot see MySpaces in my toolbar. What should I do?',
+    answer:
+      'Open your browser extensions menu and look for MySpaces. Pin it to the toolbar if your browser offers that option. If it is missing from the extensions list, confirm that installation completed in the correct browser profile and reinstall it from the official extension store if needed.',
+  },
+  {
+    question: 'A saved tab does not reopen. How can I troubleshoot it?',
+    answer:
+      'Check that the saved address is still valid and that your browser can open the site directly. Some sites block extension-driven opening or require you to sign in again. Update MySpaces and your browser, then try reopening the space. Contact support if the problem continues and include the browser version and steps to reproduce it.',
+  },
+  {
+    question: 'Will MySpaces restore my website login sessions?',
+    answer:
+      'MySpaces saves workspace tabs and their website addresses; it does not save website passwords or authentication sessions. Whether a site remains signed in depends on that site and your browser cookies.',
+  },
+  {
+    question: 'What happens if I uninstall MySpaces?',
+    answer:
+      'Uninstalling removes the extension from that browser. Before uninstalling, make sure any information you need is synced or otherwise available to you. If you need help recovering spaces or understanding what is stored, contact MySpaces support.',
+  },
+  {
+    question: 'How do I get a refund or help with a Lifetime purchase?',
+    answer:
+      'For a missing license, activation issue, billing question, or refund request, email support with the purchase email and order details. Do not include passwords or payment card numbers. Purchase terms and refund handling are subject to the checkout provider and applicable terms.',
+  },
+  {
+    question: 'How do I contact MySpaces support?',
+    answer:
+      `Email ${site.supportEmail} for installation, sync, billing, license, or privacy questions. Include your browser and version, your MySpaces plan, and the steps you tried. Never send passwords or other secret credentials.`,
+  },
+  {
+    question: 'Does MySpaces collect my browsing history?',
+    answer:
+      'MySpaces is designed to organize saved browser workspaces, not to track browsing for advertising. Workspace data stays in your browser unless you choose to use sync. For details about local data, optional sync, account information, and deletion, read the MySpaces Privacy Policy.',
+  },
+  {
+    question: 'Is MySpaces free to use?',
+    answer:
+      'Yes. MySpaces has a free plan with up to 3 spaces, grouping and pinned-tab support, and sync for 3 spaces. The optional Lifetime plan adds unlimited spaces and sync between supported browsers and computers for a one-time purchase.',
+  },
 ];
 
 export const changeLog = [

@@ -67,10 +67,11 @@ export function getSeo(pathname = '/') {
       jsonLd: [organizationJsonLd(), breadcrumbJsonLd(path)],
     },
     '/help-centre/': {
-      title: 'MySpaces Help Centre - Setup, Plans, Sync, and Support',
+      title: 'MySpaces Help Centre - Setup, Spaces, Sync, and Troubleshooting',
       description:
-        'Find answers about installing MySpaces, creating spaces, using tab groups, pinned tabs, sync, pricing, and privacy.',
-      keywords: 'MySpaces help, tab manager setup, browser sync help, Chrome extension support',
+        'Official MySpaces help for installing the browser extension, creating and restoring spaces, tab groups, pinned tabs, browser sync, plans, privacy, and troubleshooting.',
+      keywords:
+        'MySpaces help centre, MySpaces support, install MySpaces extension, browser workspace help, save browser tabs, restore tabs, browser sync, Chrome tab manager help, Firefox extension help, tab groups, pinned tabs',
       path,
       jsonLd: [faqJsonLd(), breadcrumbJsonLd(path)],
     },

@@ -904,26 +904,73 @@ function ContactPage() {
 }
 
 function HelpPage() {
+  const helpTopics = [
+    {
+      title: 'Getting started with MySpaces',
+      items: [
+        ['Install the extension', 'Choose MySpaces from the Chrome Web Store or Firefox Add-ons and follow the browser prompt. If the extension icon is hidden, open the browser extensions menu and pin it to your toolbar.'],
+        ['Create a useful first space', 'Start with one project or recurring activity. Name the space so you can recognize it later, then save the tabs that belong to that context. Separate work, study, research, and personal browsing when switching between them creates clutter.'],
+        ['Return to your work', 'Open MySpaces from the browser toolbar and select the space you need. Saved spaces make it easier to restore a set of useful links without rebuilding the same tab setup from memory.'],
+      ],
+    },
+    {
+      title: 'Organizing tabs and browser workflows',
+      items: [
+        ['Spaces and tab groups', 'A space is a reusable workspace for a task or context. Browser tab groups visually organize tabs in an active session. Use both when you want a clear workspace and related tabs grouped together.'],
+        ['Pinned tabs', 'MySpaces supports pinned tabs for frequently used pages. Pin recurring tools such as email or a calendar when they belong in your workflow. The browser controls how pinned tabs behave.'],
+        ['Ideas for spaces', 'Create spaces for client projects, classes, research, trip planning, media, shopping, or personal administration. A focused space is easier to reopen and maintain than one collection containing every open tab.'],
+      ],
+    },
+    {
+      title: 'Plans, accounts, and sync',
+      items: [
+        ['Free and Lifetime plans', 'Free includes up to 3 spaces, grouping support, pinned tabs, and sync for 3 spaces. Lifetime adds unlimited spaces and sync between supported browsers and computers. See the pricing page for current plan details.'],
+        ['Sync between browsers and computers', 'Use the same MySpaces account and complete sync setup on each device. Sync availability depends on your plan. Sync is for saved workspace information; it does not carry website cookies, passwords, or signed-in sessions.'],
+        ['Lifetime license help', `For a missing license, activation problem, or billing question, email ${site.supportEmail} with the purchase email and order details. Do not send payment card numbers or passwords.`],
+      ],
+    },
+    {
+      title: 'Troubleshooting and privacy',
+      items: [
+        ['MySpaces is missing from the toolbar', 'Look in the browser extensions menu and pin MySpaces if available. If it is not listed, check that you installed it in the browser profile you are using and that the store installation completed.'],
+        ['A space is missing on another device', 'Confirm both devices use the same account, have completed sync setup, and are online. Check that your plan includes sync for the spaces you need. If it still does not appear, contact support with your browser versions and the steps you tried.'],
+        ['A tab or website does not open as expected', 'Confirm the saved address is still valid and opens directly in your browser. Some sites require a fresh sign-in or restrict tabs opened by extensions. Update your browser and MySpaces, then contact support if the issue persists.'],
+        ['What MySpaces stores', 'MySpaces organizes workspace tabs. When you opt in to sync, the information needed to sync spaces may include your account details, website URLs, and tab structure. Cookies, passwords, and website cache are not part of space sync. Read the Privacy Policy for full details.'],
+      ],
+    },
+  ];
+
   return (
     <>
       <PageHero
-        title="Setup, plans, sync, and troubleshooting."
-        text="Core support information is filled in now so the website has a complete customer-facing help surface."
+        title="MySpaces Help Centre"
+        text="Practical help for installing the MySpaces browser extension, creating and restoring spaces, organizing tabs, syncing workspaces, choosing a plan, and fixing common issues."
       />
-      <section className="section help-grid">
-        {[
-          ['Install MySpaces', 'Install from the Chrome Web Store, pin the extension, and create your first space.'],
-          ['Create a space', 'Group related tabs, name the space clearly, then reopen it when that workflow returns.'],
-          ['Use tab groups', 'Use browser tab groups inside active sessions while MySpaces manages reusable spaces.'],
-          ['Pinned tabs', 'Keep recurring tabs pinned where supported so key tools stay available in the right workflow.'],
-          ['Sync setup', 'Use sync when you need browser spaces available across supported browsers and computers.'],
-          ['Billing support', `For Lifetime license questions, contact ${site.supportEmail}.`],
-        ].map(([title, text]) => (
-          <article key={title}>
-            <h3>{title}</h3>
-            <p>{text}</p>
-          </article>
+      <section className="section" aria-label="MySpaces setup and support guides">
+        {helpTopics.map((topic) => (
+          <div className="section" key={topic.title}>
+            <div className="section-heading">
+              <h2>{topic.title}</h2>
+            </div>
+            <div className="help-grid">
+              {topic.items.map(([title, text]) => (
+                <article key={title}>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
         ))}
+        <div className="section-heading">
+          <h2>MySpaces questions and answers</h2>
+          <p>Detailed answers about installation, spaces, browser support, sync, plans, privacy, and support.</p>
+        </div>
+        <div className="center-actions">
+          <a className="button button-secondary" href="/pricing/">Compare plans</a>
+          <a className="button button-secondary" href="/privacy-policy/">Read the Privacy Policy</a>
+          <a className="button button-secondary" href="/contact-us/">Contact support</a>
+        </div>
       </section>
       <FAQBlock showHeading={false} />
     </>
